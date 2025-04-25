@@ -23,6 +23,11 @@ Return to Website: <a
 href="https://www.usjr.edu.ph/"><strong>University of San Jose -
 Recoletos</strong></a>
 </p>
+
+<form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
  
  </div>
  </div>

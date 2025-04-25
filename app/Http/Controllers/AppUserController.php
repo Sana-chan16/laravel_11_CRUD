@@ -9,44 +9,54 @@ use Illuminate\Support\Facades\Hash;
 
 class AppUserController extends Controller
 {
-    public function showLoginForm(){
-        return view ('login');
+    public function showLoginForm()
+    {
+        return view('login');
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $request->validate([
             'user_id' => 'required',
-            'user_password' => 'required'
+            'password' => 'required'
         ]);
-    
-    
+
         $user = AppUserModel::where('user_id', $request->user_id)->first();
-    
 
         if (!$user || !Hash::check($request->password, $user->user_password)) {
             return back()->withErrors(['error' => 'Invalid User ID or Password']);
         }
 
-        
         Auth::login($user);
-        return redirect('products.index');
         session(['user_id' => $user->user_id]);
+
+        return redirect()->route('products.index');
     }
 
-
-
-    public function showRegister(){
+    public function showRegisterForm()
+    {
         return view('registration');
     }
 
-
-    public function register(){
+    public function register(Request $request)
+    {
         $request->validate([
             'user_id' => 'required|unique:app-users,user_id',
-            'user_lname' => 'required',
             'user_fname' => 'required',
-            'user_password'=> 'required|min:8'
-         
+            'user_lname' => 'required',
+            'password' => 'required|min:8|confirmed',
         ]);
+
+        $user = AppUserModel::create([
+            'user_id' => $request->user_id,
+            'user_fname' => $request->user_fname,
+            'user_lname' => $request->user_lname,
+            'user_password' => Hash::make($request->password),
+        ]);
+
+        Auth::login($user);
+        session(['user_id' => $user->user_id]);
+
+        return redirect()->route('products.index');
     }
 }
