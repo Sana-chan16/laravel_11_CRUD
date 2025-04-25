@@ -9,3 +9,7 @@ Route::get('/', function () {
 
 Route::resource('products', ProductController::class);
 
+
+Route::get('/', function () {
+    return view('login');
+});
