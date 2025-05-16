@@ -1,13 +1,12 @@
-@extends('layouts.app')
-
 @section('content')
     <div class="row justify-content-center mt-3">
         <div class="col-md-8">
-            @session('success')
-                <div class="alert alert-success" role="alert">
-                    {{ $value }}
-                </div>
-            @endsession
+           @if (session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
+
 
             <div class="card">
                 <div class="card-header">
@@ -81,9 +80,9 @@
                                          <input type="file" name="image" id="image" alt = "Product Image" accept="image/*" class="form-control @error('image') is-invalid @enderror">
                                     @endif
                                     <input type="file" name="image" id="image" accept="image/*" class="form-control @error('image') is-invalid @enderror">
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                            </div>
+                                    @error('image')
+    <span class="text-danger">{{ $message }}</span>
+@enderror
                          </div>
 
                         <div class="mb-3 row">
