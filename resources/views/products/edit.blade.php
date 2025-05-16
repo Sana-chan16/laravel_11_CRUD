@@ -78,11 +78,9 @@
                              <label for="image" class="col-md-4 col-form-label text-md-end text-start">Product Image</label>
                             <div class="col-md-6">
                                    @if ($product->image)
-                                         <input type="file" name="image" id="image" alt = "Product Image" accept="image/*" class="form-control @error('image') is-invalid @enderror">
+                                     <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" style="max-width: 150px; display: block; margin-bottom: 10px;">
                                     @endif
-                                    <input type="file" name="image" id="image" accept="image/*" class="form-control @error('image') is-invalid @enderror">
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">
                             </div>
                          </div>
 
