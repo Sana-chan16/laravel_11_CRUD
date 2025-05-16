@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
 class AppUserController extends Controller
 {
     public function showLoginForm()
@@ -57,6 +58,6 @@ class AppUserController extends Controller
         Auth::login($user);
         session(['user_id' => $user->user_id]);
 
-        return redirect()->route('products.index');
+        return redirect()->route('register')->with('success', 'Successfully registered. Proceed to login.');
     }
 }
