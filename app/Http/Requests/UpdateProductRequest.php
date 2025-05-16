@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\ProductController;
+
 
 class UpdateProductRequest extends FormRequest
 {
@@ -12,7 +12,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,8 @@ class UpdateProductRequest extends FormRequest
     'name' => 'required|string|max:250',
     'quantity' => 'required|integer|min:1|max:10000',
     'price' => 'required',
-    'description' => 'nullable|string'
+    'description' => 'nullable|string',
+     'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
     ];
     }
    

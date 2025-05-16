@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProductController extends Controller
@@ -32,12 +33,23 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
     public function store(StoreProductRequest $request) : RedirectResponse
-     {
-            Product::create($request->validated());
-            return redirect()->route('products.index')
+    {
+        $validated = $request->validated();
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('product-images', 'public');
+        }
+
+        Product::create($validated);
+
+        return redirect()->route('products.index')
             ->withSuccess('New product is added successfully.');
-     }
+    }
+
 
     /**
      * Display the specified resource.
@@ -56,13 +68,25 @@ class ProductController extends Controller
  /**
  * Update the specified resource in storage.
  */
-    public function update(UpdateProductRequest $request, Product $product) : RedirectResponse
-    {
-        $product->update($request->validated());
-        return redirect()->back()
-        ->withSuccess('Product is updated successfully.');
+   public function update(UpdateProductRequest $request, Product $product) : RedirectResponse
+{
+    $validated = $request->validated();
 
+    // Handle image update
+    if ($request->hasFile('image')) {
+        // Optional: delete old image if exists
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        $validated['image'] = $request->file('image')->store('product-images', 'public');
     }
+
+    $product->update($validated);
+
+    return redirect()->back()
+        ->withSuccess('Product is updated successfully.');
+}
 
     /**
     * Remove the specified resource from storage.
