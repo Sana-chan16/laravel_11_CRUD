@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AppUserController extends Controller
 {
+
     public function showLoginForm()
     {
         return view('login');
     }
+
 
     public function login(Request $request)
     {
@@ -34,11 +36,14 @@ class AppUserController extends Controller
         return redirect()->route('products.index');
     }
 
+
     public function showRegisterForm()
     {
         return view('registration');
     }
 
+
+    
     public function register(Request $request)
     {
         $request->validate([

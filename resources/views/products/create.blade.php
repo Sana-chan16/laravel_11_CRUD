@@ -11,8 +11,8 @@
                     </div>
                 </div>
 
-                <div class="card-body">
-                    <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
+                <div class="card-body">"
+                    <form action="{{ route('products.store') }}" onsubmit="return confirmAddProd() method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3 row">
                             <label for="code" class="col-md-4 col-form-label text-md-end text-start">Code</label>
@@ -75,11 +75,19 @@
                          </div>
 
                         <div class="mb-3 row">
-                            <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Add Product">
+                            <input type="submit"  class="col-md-3 offset-md-5 btn btn-primary" value="Add Product">
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+     @push('scripts')
+        <script>
+            function confirmAddProd() {
+                 return confirm('Are you sure you want to add this product?');
+        }
+        </script>
+    @endpush
 @endsection

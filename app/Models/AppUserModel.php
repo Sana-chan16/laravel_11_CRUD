@@ -19,10 +19,15 @@ class AppUserModel extends Authenticatable
         'user_password',
     ];
 
-    protected $hidden = ['user_password']; // Enclose 'user_password' in quotes
+    protected $hidden = ['user_password']; 
 
     public function getAuthPassword()
     {
         return $this->user_password;
     }
+
+    public function getNameAttribute()
+{
+    return $this->user_fname . ' ' . $this->user_lname;
+}
 }
