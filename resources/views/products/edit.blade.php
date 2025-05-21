@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('products.update', $product->id) }}" onsubmit="return confirmEditProd()" method="post" enctype="multipart/form-data">
                         @csrf
                         @method("PUT")
 
@@ -75,14 +75,23 @@
                         </div>
 
                         <div class="mb-3 row">
-                             <label for="image" class="col-md-4 col-form-label text-md-end text-start">Product Image</label>
+                            <label for="image" class="col-md-4 col-form-label text-md-end text-start">Product Image</label>
                             <div class="col-md-6">
-                                   @if ($product->image)
-                                     <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" style="max-width: 150px; display: block; margin-bottom: 10px;">
-                                    @endif
-                                    <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">
+                                <div id="image-preview-wrapper" style="{{ $product->image ? '' : 'display: none;' }}">
+                                    <div style="position: relative; display: inline-block;">
+                                        <button type="button" id="remove-image-btn" style="position: absolute; top: -10px; left: -10px; background-color: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px;">&times;</button>
+                                        <img src="{{ $product->image ? asset('storage/' . $product->image) : '' }}" id="image-preview" alt="Product Image" style="max-width: 150px;">
+                                    </div>
+                                </div>
+
+                                <div id="image-input-wrapper" style="{{ $product->image ? 'display: none;' : '' }}">
+                                    <input type="file" name="image" id="image" accept="image/*" class="form-control @error('image') is-invalid @enderror">
+                                    @error('image')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
-                         </div>
+                        </div>
 
                         <div class="mb-3 row">
                             <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Update">
@@ -92,4 +101,25 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const removeBtn = document.getElementById('remove-image-btn');
+                const previewWrapper = document.getElementById('image-preview-wrapper');
+                const inputWrapper = document.getElementById('image-input-wrapper');
+
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', function () {
+                        previewWrapper.style.display = 'none';
+                        inputWrapper.style.display = 'block';
+                    });
+                }
+            });
+
+         function confirmEditProd() {
+                 return confirm('Are you sure you want to edit this product?');
+        }
+        </script>
+    @endpush
 @endsection
