@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Right: Product Image -->
+                        
                         <div class="col-md-5 d-flex align-items-center justify-content-center">
                             @if ($product->image)
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" style="max-width: 300px; width:100%; height:auto;">

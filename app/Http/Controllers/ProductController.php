@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index() : View
     {
         return view('products.index', [
@@ -22,24 +20,19 @@ class ProductController extends Controller
         ]);
     }
    
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create() : View
     {
         return view('products.create');
         }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+  
 
 
     public function store(StoreProductRequest $request) : RedirectResponse
     {
         $validated = $request->validated();
 
-        // Handle image upload
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('product-images', 'public');
         }
@@ -51,30 +44,25 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Product $product) : View
         {
         return view('products.show', compact('product'));
         }
- /**
- * Show the form for editing the specified resource.
- */
+
+
+
     public function edit(Product $product) : View
         {
         return view('products.edit', compact('product'));
     }
- /**
- * Update the specified resource in storage.
- */
+
+
    public function update(UpdateProductRequest $request, Product $product) : RedirectResponse
 {
     $validated = $request->validated();
 
-    // Handle image update
     if ($request->hasFile('image')) {
-        // Optional: delete old image if exists
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
@@ -88,11 +76,14 @@ class ProductController extends Controller
         ->withSuccess('Product is updated successfully.');
 }
 
-    /**
-    * Remove the specified resource from storage.
-    */
+
+
     public function destroy(Product $product) : RedirectResponse
     {
+        if ($product->image) {
+             Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
         return redirect()->route('products.index')
         ->withSuccess('Product is deleted successfully.');
